@@ -22,8 +22,4 @@ RUN apt-get update && apt-get install -y tmux lsb-release software-properties-co
 &&  curl -sL "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
 &&  mv /tmp/eksctl /usr/local/bin
 
-COPY ssl-keygen .
-RUN . ssl-keygen
 COPY . /home/buster
-
-CMD ["bash", "-c", "/etc/init.d/ssh start && .nvm/versions/node/v1*/bin/node . --sslkey tls/wildcard.jsx.jp.key --sslcert tls/wildcard.jsx.jp.cert"]
