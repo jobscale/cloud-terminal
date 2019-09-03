@@ -4,9 +4,9 @@
 
 ```
 kubectl create deployment cloud-terminal --image jobscale/cloud-terminal
-kubectl expose deployment cloud-terminal --name cloud-terminal --type LoadBalancer --port 80 --target-port 80
+kubectl expose deployment cloud-terminal --name cloud-terminal --type LoadBalancer --port 443 --target-port 3000
 open http://d.d.d.d/wetty/ # user: buster password: buster
-chpasswd # required
+passwd # change password required
 ```
 
 ## GCP login

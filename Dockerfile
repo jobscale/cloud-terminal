@@ -1,11 +1,6 @@
 FROM jobscale/wetty:latest
 
 RUN apt-get update && apt-get install -y tmux lsb-release software-properties-common \
-# docker
-&&  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
-&&  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
-&&  apt-get install -y docker-ce apt-transport-https \
-&&  usermod -aG docker buster \
 # kubectl
 &&  curl -sLO https://storage.googleapis.com/kubernetes-release/release/$( \
       curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt \
@@ -27,4 +22,8 @@ RUN apt-get update && apt-get install -y tmux lsb-release software-properties-co
 &&  curl -sL "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
 &&  mv /tmp/eksctl /usr/local/bin
 
-COPY .bash_aliases /home/buster/.bash_aliases
+COPY ssl-keygen .
+RUN . ssl-keygen
+COPY . /home/buster
+
+CMD ["bash", "-c", "/etc/init.d/ssh start && .nvm/versions/node/v1*/bin/node . --sslkey tls/wildcard.jsx.jp.key --sslcert tls/wildcard.jsx.jp.cert"]
