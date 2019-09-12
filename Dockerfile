@@ -20,9 +20,9 @@ RUN curl -sO https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin
  && curl -sL "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
  && mv /tmp/eksctl /usr/local/bin
 
-# Azure (aks)
+# Azure (aks) TODO: not release with buster
 RUN (curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | apt-key add -) \
- && add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" \
+ && add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(echo stretch) main" \
  && apt-get update && apt-get install -y azure-cli
 
 COPY . /home/buster
