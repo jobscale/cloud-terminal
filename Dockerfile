@@ -1,6 +1,6 @@
 FROM jobscale/wetty
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y lsb-release software-properties-common
+RUN apt-get update && apt-get install -y lsb-release software-properties-common apt-transport-https
 # Kubernetes (kubectl)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/$( \
       curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt \
