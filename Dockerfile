@@ -1,6 +1,7 @@
-FROM jobscale/wetty
+FROM ghcr.io/jobscale/wetty
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y lsb-release software-properties-common apt-transport-https git zip unzip tmux iproute2 dnsutils netcat whois gpg
+RUN apt-get update && apt-get install -y lsb-release software-properties-common apt-transport-https \
+  git zip unzip tmux iproute2 dnsutils netcat whois gpg
 
 # Kubernetes (kubectl)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/$( \
@@ -9,8 +10,9 @@ RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/$( \
  && chmod +x kubectl && mv kubectl /usr/local/bin
 
 # GCP (gke)
-RUN curl -sL https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-302.0.0-linux-x86_64.tar.gz | tar xz -C /tmp \
- && /tmp/google-cloud-sdk/install.sh
+RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
+ && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - \
+ && sudo apt-get update && sudo apt-get install -y google-cloud-cli
 
 # AWS (eks)
 RUN curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
@@ -19,9 +21,8 @@ RUN curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksc
  && mv /tmp/eksctl /usr/local/bin
 
 # Azure (aks) TODO: not release with buster
-RUN (curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | apt-key add -) \
- && add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(echo stretch) main" \
- && apt-get update && apt-get install -y azure-cli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 RUN rm -fr /var/lib/apt/lists/*
-COPY . /home/buster
+WORKDIR /home/node/task
+COPY --chown=node:staff . /home/node/task
