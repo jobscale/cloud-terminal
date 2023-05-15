@@ -1,7 +1,8 @@
 FROM ghcr.io/jobscale/wetty
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y lsb-release software-properties-common apt-transport-https \
-  git zip unzip tmux iproute2 dnsutils netcat whois gpg
+RUN apt-get update && apt-get install -y lsb-release software-properties-common \
+  ca-certificates apt-transport-https gpg \
+  git unzip tmux iproute2 dnsutils netcat whois
 
 # Kubernetes (kubectl)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/$( \
