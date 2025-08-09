@@ -1,5 +1,5 @@
 FROM ghcr.io/jobscale/wetty
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends lsb-release software-properties-common \
   ca-certificates apt-transport-https gpg \
   git unzip tmux iproute2 dnsutils netcat whois \
